@@ -1,0 +1,79 @@
+rad:
+  train_file: [ '/mnt/sda/lpf/data/vqa/data_RAD/trainset.json' ]
+  test_file: [ '/mnt/sda/lpf/data/vqa/data_RAD/testset.json' ]
+  answer_list: '/mnt/sda/lpf/data/vqa/data_RAD/answer_all_list.json'
+  vqa_root: '/mnt/sda/lpf/data/vqa/data_RAD/images/'  # vqa_rad
+pathvqa:
+  train_file: [ '/mnt/sda/lpf/data/vqa/data_PathVQA/pathvqa_train.json',
+                '/mnt/sda/lpf/data/vqa/data_PathVQA/pathvqa_val.json' ]
+  test_file: [ '/mnt/sda/lpf/data/vqa/data_PathVQA/pathvqa_test.json' ]
+  answer_list: '/mnt/sda/lpf/data/vqa/data_PathVQA/answer_trainval_list.json'
+  vqa_root: '/mnt/sda/lpf/data/vqa/data_PathVQA/images/'
+slake:
+  train_file: [ '/mnt/sda/lpf/data/vqa/data_Slake/en/slake_train.json',
+                '/mnt/sda/lpf/data/vqa/data_Slake/en/slake_val.json' ]
+  test_file: [ '/mnt/sda/lpf/data/vqa/data_Slake/en/slake_test.json' ]
+  answer_list: '/mnt/sda/lpf/data/vqa/data_Slake/en/answer_trainval_list.json'
+  vqa_root: '/mnt/sda/lpf/data/vqa/data_Slake/imgs/'  # slake
+med2019:
+  train_file: [ '/mnt/sda/lpf/data/vqa/vqa_med/2019/vqa_med_2019_train.json',
+                '/mnt/sda/lpf/data/vqa/vqa_med/2019/vqa_med_2019_valid.json' ]
+  test_file: [ '/mnt/sda/lpf/data/vqa/vqa_med/2019/vqa_med_2019_test.json' ]
+  answer_list: '/mnt/sda/lpf/data/vqa/vqa_med/2019/answer_trainval_list.json'
+  vqa_root: '/mnt/sda/lpf/data/vqa/vqa_med/2019/images/'
+
+image_res: 384
+batch_size_train: 8
+batch_size_test: 4
+k_test: 128
+
+alpha: 0.4
+distill: True
+warm_up: True
+
+eos: '[SEP]'
+bert_config: 'configs/config_bert.json'
+
+# Original MUMC baseline remains the default path.
+model_variant: mumc
+train_stage: baseline
+use_diffrep: False
+use_diffalign: False
+use_global_contrast: True
+use_answer_contrast: False
+use_decorrelation: True
+use_gate_entropy: False
+unfreeze_visual_last_n_blocks: 0
+unfreeze_text_last_n_layers: 0
+
+diffusion:
+  enabled: False
+  model_id: 'runwayml/stable-diffusion-v1-5'
+  revision:
+  local_files_only: True
+  frozen: True
+  timestep: 50
+  hidden_dim: 256
+  num_heads: 8
+  num_layers: 1
+  dropout: 0.1
+  active_scales: [0, 1, 2]
+
+loss:
+  contrastive_temperature: 0.07
+  lambda_global_contrast: 0.1
+  lambda_answer_contrast: 0.0
+  lambda_decorrelation: 0.05
+  lambda_gate_entropy: 0.0
+
+# optimizer / scheduler
+init_lr: 2e-5
+weight_decay: 0.05
+min_lr: 1e-8
+max_epoch: 40
+optimizer:
+  new_lr: 1e-4
+  backbone_lr: 1e-5
+  decoder_lr: 1e-4
+  diffusion_backbone_lr: 5e-6
+  weight_decay: 1e-4
